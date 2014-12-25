@@ -22,12 +22,12 @@ public class GitHubPullRequestService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<PullRequest> fetchPullRequests(String authorizationValue) {
+    public List<PullRequest> fetchPullRequests(String accessToken) {
         log.debug("Fetching all pull requests");
         ResponseEntity<PullRequest[]> response = restTemplate.exchange(
                 "https://api.github.com/repos/amedia/hanuman/pulls",
                 HttpMethod.GET,
-                createHeaderAuthorization(authorizationValue),
+                createHeaderAuthorization(accessToken),
                 PullRequest[].class);
         return Arrays.asList(response.getBody());
     }
