@@ -57,6 +57,6 @@ public class AuthController {
         } catch (IOException e) {
             log.error("Cannot get access token from GitHub.", e);
         }
-        return "redirect:/test";
+        return "redirect:/pullrequest";
     }
 }
