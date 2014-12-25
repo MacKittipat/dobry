@@ -31,7 +31,7 @@ public class AuthController {
                 "?client_id=" + gitHubConfig.getAppClientId() +
                 "&scope=" + gitHubConfig.getAuthorizeScope() +
                 "&state=" + gitHubConfig.getAuthorizeState();
-        log.debug("Sending request to GitHub authorize. url={}", gitHubAuthorizeUrl);
+        log.debug("Sending request to GitHub authorize.");
         return "redirect:" + gitHubAuthorizeUrl;
     }
 
@@ -39,6 +39,7 @@ public class AuthController {
     public String gitHubCallBack(@RequestParam String code,
                                  @RequestParam String state,
                                  HttpServletRequest request) {
+        log.debug("Sending request to GitHub access token.");
         Request postRequest = Request.Post(gitHubConfig.getAccessTokenUrl())
                 .addHeader("Accept", "application/json")
                 .bodyForm(Form.form()
@@ -54,7 +55,7 @@ public class AuthController {
                     mapper.readValue(accessTokenResult, AccessToken.class);
             request.getSession().setAttribute("accessToken", accessToken.getAccessToken());
         } catch (IOException e) {
-            log.error("Error ...", e);
+            log.error("Cannot get access token from GitHub.", e);
         }
         return "redirect:/test";
     }
