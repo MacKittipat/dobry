@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -31,11 +33,13 @@ public class MainController {
     @RequestMapping(value = "/test")
     public String test(HttpServletRequest request) {
         PullRequest pullRequest = new PullRequest();
+        List<PullRequest> pullRequestList = new ArrayList<>();
         if(request.getSession().getAttribute("accessToken") != null) {
             String accessToken = request.getSession().getAttribute("accessToken").toString();
             log.debug("accessToken={}", accessToken);
             pullRequest = gitHubPullRequestService.fetchPullRequest(accessToken, 263);
+            pullRequestList = gitHubPullRequestService.fetchPullRequests(accessToken);
         }
-        return pullRequest.getTitle() + " - " + pullRequest.getCreatedAt();
+        return pullRequest.getTitle() + " - " + pullRequest.getCreatedAt() + " - " + pullRequestList.size();
     }
 }
