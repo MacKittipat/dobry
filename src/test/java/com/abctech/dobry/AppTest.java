@@ -24,4 +24,11 @@ public class AppTest {
         String authValue = "";
         gitHubPullRequestService.fetchPullRequest(authValue, 263);
     }
+
+    @Test
+    public void testFetchPullRequests() {
+        // TODO input your authValue here. Generate from BasicAuthenticationService.createAuthorizationValue
+        String authValue = "";
+        gitHubPullRequestService.fetchPullRequests(authValue);
+    }
 }

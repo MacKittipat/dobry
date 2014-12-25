@@ -24,9 +24,18 @@ public class GitHubPullRequestService {
     @Autowired
     private MappingService mappingService;
 
-    public List<Object> fetchPullRequests(String authorizationValue) {
+    public List<PullRequest> fetchPullRequests(String authorizationValue) {
         log.debug("Fetching all pull requests");
-        return null;
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://api.github.com/repos/amedia/hanuman/pulls",
+                HttpMethod.GET,
+                createHeaderAuthorization(authorizationValue),
+                String.class);
+
+        log.debug(response.getBody());
+
+        return mappingService.mapJsonToPullRequestList(response.getBody());
     }
 
     public PullRequest fetchPullRequest(String accessToken, int pullRequestId) {
@@ -40,7 +49,7 @@ public class GitHubPullRequestService {
 
         log.debug(response.getBody());
 
-        return mappingService.mapJsonToPullRequestObj(response.getBody());
+        return mappingService.mapJsonToPullRequestObject(response.getBody());
     }
 
     private HttpEntity<String> createHeaderAuthorization(String value) {
