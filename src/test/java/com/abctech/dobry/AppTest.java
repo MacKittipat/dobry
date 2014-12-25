@@ -20,10 +20,8 @@ public class AppTest {
 
     @Test
     public void testFetchPullRequest() {
-        String username = "";
-        String password = "";
-
-        gitHubPullRequestService.fetchPullRequest(
-                basicAuthenticationService.createAuthorizationValue(username, password), 297);
+        // TODO input yout authValue here. Genreate from BasicAuthenticationService.createAuthorizationValue
+        String authValue = "";
+        gitHubPullRequestService.fetchPullRequest(authValue, 263);
     }
 }
