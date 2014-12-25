@@ -1,5 +1,6 @@
 package com.abctech.dobry.webapp.controller;
 
+import com.abctech.dobry.config.properties.GitHubConfig;
 import com.abctech.dobry.webapp.json.AccessToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.fluent.Form;
@@ -7,11 +8,12 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Controller
@@ -20,37 +22,40 @@ public class AuthController {
 
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
-    @RequestMapping(value = "/test")
-    public String test() {
-        log.debug("Test ...");
-        return "redirect:https://github.com/login/oauth/authorize?client_id=1b6ee3124225fa76fe17&scope=repo:status&state=123";
+    @Autowired
+    private GitHubConfig gitHubConfig;
+
+    @RequestMapping(value = "/github")
+    public String authGitHub() {
+        String gitHubAuthorizeUrl = gitHubConfig.getAuthorizeUrl() +
+                "?client_id=" + gitHubConfig.getAppClientId() +
+                "&scope=" + gitHubConfig.getAuthorizeScope() +
+                "&state=" + gitHubConfig.getAuthorizeState();
+        log.debug("Sending request to GitHub authorize. url={}", gitHubAuthorizeUrl);
+        return "redirect:" + gitHubAuthorizeUrl;
     }
 
-    @ResponseBody
     @RequestMapping(value = "/github/callback")
     public String gitHubCallBack(@RequestParam String code,
-                                 @RequestParam String state) {
-
-        log.debug("Callback ...");
-
-        Request request = Request.Post("https://github.com/login/oauth/access_token")
+                                 @RequestParam String state,
+                                 HttpServletRequest request) {
+        Request postRequest = Request.Post(gitHubConfig.getAccessTokenUrl())
                 .addHeader("Accept", "application/json")
                 .bodyForm(Form.form()
-                        .add("client_id", "1b6ee3124225fa76fe17")
-                        .add("client_secret", "119aa53f37c344f5adfe01a56a185877551ae12a")
+                        .add("client_id", gitHubConfig.getAppClientId())
+                        .add("client_secret", gitHubConfig.getAppClientSecret())
                         .add("code", code)
                         .build());
         try {
-            Response response = request.execute();
-            String result = response.returnContent().asString();
-            log.debug(">>" + result);
+            Response response = postRequest.execute();
+            String accessTokenResult = response.returnContent().asString();
             ObjectMapper mapper = new ObjectMapper();
             AccessToken accessToken =
-                    mapper.readValue(result, AccessToken.class);
-            log.debug("access_token = {}", accessToken.getAccessToken());
+                    mapper.readValue(accessTokenResult, AccessToken.class);
+            request.getSession().setAttribute("accessToken", accessToken.getAccessToken());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error ...", e);
         }
-        return "Callback ...";
+        return "redirect:/test";
     }
 }

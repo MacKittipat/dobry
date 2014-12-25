@@ -1,52 +1,45 @@
 package com.abctech.dobry.webapp.controller;
 
-import com.abctech.dobry.form.AuthForm;
-import com.abctech.dobry.webapp.service.BasicAuthenticationService;
+import com.abctech.dobry.config.properties.GitHubConfig;
+import com.abctech.dobry.webapp.json.PullRequest;
+import com.abctech.dobry.webapp.service.github.GitHubPullRequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class MainController {
 
+    private static final Logger log = LoggerFactory.getLogger(MainController.class);
+
     @Autowired
-    private BasicAuthenticationService basicAuthenticationService;
+    private GitHubConfig gitHubConfig;
 
-    @RequestMapping(value = "/")
-    public String home() {
-        return "redirect:auth";
-    }
+    @Autowired
+    private GitHubPullRequestService gitHubPullRequestService;
 
-    @RequestMapping(value = "/auth")
-    public String authenticate(Model model,
-                                    HttpServletRequest request,
-                                    @ModelAttribute("authForm") AuthForm authForm) {
-        if (basicAuthenticationService.getAuthorizationValue() != null) {
-            return "index";
-        }
-        model.addAttribute("pageContent", "auth");
-        if (request.getMethod().equals(RequestMethod.POST.toString())) {
-            String base64Auth = basicAuthenticationService
-                                .createAuthorizationValue(authForm.getUsername(), authForm.getPassword());
-            // need to implement Github authentication checking
-            request.getSession().setAttribute("authorization", base64Auth);
-            if (basicAuthenticationService.getAuthorizationValue() != null) {
-                return "redirect:index";
-            }
-        }
+    @RequestMapping(value = "/index")
+    public String index(Model model) {
+        model.addAttribute("pageContent", "content/main/index");
+        model.addAttribute("gitHubLoginUrl", "/auth/github");
         return "layout";
     }
 
-    @RequestMapping(value = "/index")
-    public String index(Model model,
-                        HttpServletRequest request,
-                        @ModelAttribute("result") AuthForm authForm) {
-        String result = basicAuthenticationService.getAuthorizationValue();
-        return "index";
+    @ResponseBody
+    @RequestMapping(value = "/test")
+    public String test(HttpServletRequest request) {
+        PullRequest pullRequest = new PullRequest();
+        if(request.getSession().getAttribute("accessToken") != null) {
+            String accessToken = request.getSession().getAttribute("accessToken").toString();
+            log.debug("accessToken={}", accessToken);
+            pullRequest = gitHubPullRequestService.fetchPullRequest(accessToken, 263);
+        }
+        return pullRequest.getTitle();
     }
 }

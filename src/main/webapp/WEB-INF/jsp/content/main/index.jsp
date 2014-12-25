@@ -1,10 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<html>
-<head>
-    <title>Dobry</title>
-</head>
-<body>
-<jsp:include page="${pageContent}.jsp" />
-</body>
-</html>
+<h1>Index</h1>
+<div>
+    <a href="<spring:url value="${gitHubLoginUrl}" />">Login</a>
+</div>

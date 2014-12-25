@@ -29,13 +29,13 @@ public class GitHubPullRequestService {
         return null;
     }
 
-    public PullRequest fetchPullRequest(String authorizationValue, int pullRequestId) {
+    public PullRequest fetchPullRequest(String accessToken, int pullRequestId) {
         log.debug("Fetching pull request. id={}", pullRequestId);
 
         ResponseEntity<String> response = restTemplate.exchange(
                 "https://api.github.com/repos/amedia/hanuman/pulls/" + pullRequestId,
                 HttpMethod.GET,
-                createHeaderAuthorization(authorizationValue),
+                createHeaderAuthorization(accessToken),
                 String.class);
 
         log.debug(response.getBody());
@@ -43,9 +43,9 @@ public class GitHubPullRequestService {
         return mappingService.mapJsonToPullRequestObj(response.getBody());
     }
 
-    private HttpEntity<String> createHeaderAuthorization(String base64Auth) {
+    private HttpEntity<String> createHeaderAuthorization(String value) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + base64Auth);
+        headers.add("Authorization", "token " + value);
         return new HttpEntity<>(headers);
     }
 }
