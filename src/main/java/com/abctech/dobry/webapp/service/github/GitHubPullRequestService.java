@@ -1,5 +1,6 @@
 package com.abctech.dobry.webapp.service.github;
 
+import com.abctech.dobry.webapp.json.PullRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,15 @@ public class GitHubPullRequestService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private MappingService mappingService;
+
     public List<Object> fetchPullRequests(String authorizationValue) {
         log.debug("Fetching all pull requests");
         return null;
     }
 
-    public Object fetchPullRequest(String authorizationValue, int pullRequestId) {
+    public PullRequest fetchPullRequest(String authorizationValue, int pullRequestId) {
         log.debug("Fetching pull request. id={}", pullRequestId);
 
         ResponseEntity<String> response = restTemplate.exchange(
@@ -36,7 +40,7 @@ public class GitHubPullRequestService {
 
         log.debug(response.getBody());
 
-        return null;
+        return mappingService.mapJsonToPullRequestObj(response.getBody());
     }
 
     private HttpEntity<String> createHeaderAuthorization(String base64Auth) {
