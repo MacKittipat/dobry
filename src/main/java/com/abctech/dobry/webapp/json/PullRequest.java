@@ -1,5 +1,8 @@
 package com.abctech.dobry.webapp.json;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.joda.time.DateTime;
+
 public class PullRequest {
 
     private long id;
@@ -7,10 +10,19 @@ public class PullRequest {
     private String state;
     private String title;
     private String body;
-    private String created_at;
-    private String updated_at;
-    private String closed_at;
-    private String merged_at;
+
+    @JsonProperty(value = "created_at")
+    private DateTime createdAt;
+
+    @JsonProperty(value = "updated_at")
+    private DateTime updatedAt;
+
+    @JsonProperty(value = "closed_at")
+    private DateTime closedAt;
+
+    @JsonProperty(value = "merged_at")
+    private DateTime mergedAt;
+
     private User user;
 
     public long getId() {
@@ -53,36 +65,36 @@ public class PullRequest {
         this.body = body;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public DateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(DateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public DateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(DateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public String getClosed_at() {
-        return closed_at;
+    public DateTime getClosedAt() {
+        return closedAt;
     }
 
-    public void setClosed_at(String closed_at) {
-        this.closed_at = closed_at;
+    public void setClosedAt(DateTime closedAt) {
+        this.closedAt = closedAt;
     }
 
-    public String getMerged_at() {
-        return merged_at;
+    public DateTime getMergedAt() {
+        return mergedAt;
     }
 
-    public void setMerged_at(String merged_at) {
-        this.merged_at = merged_at;
+    public void setMergedAt(DateTime mergedAt) {
+        this.mergedAt = mergedAt;
     }
 
     public User getUser() {
@@ -101,11 +113,11 @@ public class PullRequest {
         sb.append(", state='").append(state).append('\'');
         sb.append(", title='").append(title).append('\'');
         sb.append(", body='").append(body).append('\'');
-        sb.append(", created_at='").append(created_at).append('\'');
-        sb.append(", updated_at='").append(updated_at).append('\'');
-        sb.append(", closed_at='").append(closed_at).append('\'');
-        sb.append(", merged_at='").append(merged_at).append('\'');
-        sb.append(", user='").append(user.toString()).append('\'');
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", closedAt=").append(closedAt);
+        sb.append(", mergedAt=").append(mergedAt);
+        sb.append(", user=").append(user);
         sb.append('}');
         return sb.toString();
     }

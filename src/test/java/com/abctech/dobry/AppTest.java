@@ -20,7 +20,7 @@ public class AppTest {
 
     @Test
     public void testFetchPullRequest() {
-        // TODO input yout authValue here. Genreate from BasicAuthenticationService.createAuthorizationValue
+        // TODO input your authValue here. Generate from BasicAuthenticationService.createAuthorizationValue
         String authValue = "";
         gitHubPullRequestService.fetchPullRequest(authValue, 263);
     }
