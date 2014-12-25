@@ -36,6 +36,6 @@ public class MainController {
             log.debug("accessToken={}", accessToken);
             pullRequest = gitHubPullRequestService.fetchPullRequest(accessToken, 263);
         }
-        return pullRequest.getTitle();
+        return pullRequest.getTitle() + " - " + pullRequest.getCreatedAt();
     }
 }
