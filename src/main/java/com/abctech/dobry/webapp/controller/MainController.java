@@ -1,6 +1,5 @@
 package com.abctech.dobry.webapp.controller;
 
-import com.abctech.dobry.config.properties.GitHubConfig;
 import com.abctech.dobry.webapp.json.PullRequest;
 import com.abctech.dobry.webapp.service.github.GitHubPullRequestService;
 import org.slf4j.Logger;
@@ -19,12 +18,9 @@ public class MainController {
     private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
-    private GitHubConfig gitHubConfig;
-
-    @Autowired
     private GitHubPullRequestService gitHubPullRequestService;
 
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = {"/", "/index"})
     public String index(Model model) {
         model.addAttribute("pageContent", "content/main/index");
         model.addAttribute("gitHubLoginUrl", "/auth/github");
