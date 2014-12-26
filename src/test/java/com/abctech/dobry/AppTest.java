@@ -1,6 +1,7 @@
 package com.abctech.dobry;
 
 import com.abctech.dobry.webapp.service.BasicAuthenticationService;
+import com.abctech.dobry.webapp.service.github.GitHubOrganizationRepositoryService;
 import com.abctech.dobry.webapp.service.github.GitHubPullRequestService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,9 @@ public class AppTest {
 
     @Autowired
     private GitHubPullRequestService gitHubPullRequestService;
+
+    @Autowired
+    private GitHubOrganizationRepositoryService gitHubOrganizationRepositoryService;
 
     @Autowired
     private BasicAuthenticationService basicAuthenticationService;
@@ -30,5 +34,11 @@ public class AppTest {
         // TODO input your authValue here. Generate from BasicAuthenticationService.createAuthorizationValue
         String authValue = "";
         gitHubPullRequestService.fetchPullRequests(authValue);
+    }
+
+    @Test
+    public void testFetchAmediaRepos() {
+        String authValue = "";
+        gitHubOrganizationRepositoryService.fetchAmediaRepositories(authValue);
     }
 }
