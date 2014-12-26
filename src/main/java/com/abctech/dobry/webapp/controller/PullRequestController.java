@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@RequestMapping(value = "/pullrequest")
 @Controller
 public class PullRequestController {
 
     @Autowired
     private GitHubPullRequestService gitHubPullRequestService;
 
-    @RequestMapping(value = "/pullrequest")
-    public String listPullRequest(Model model,
+    @RequestMapping(value = "/")
+    public String index(Model model,
                                   HttpServletRequest request,
                                   @ModelAttribute("githubPullRequestForm")GithubPullRequestForm githubPullRequestForm){
         PullRequest pullRequest = null;
@@ -31,7 +32,7 @@ public class PullRequestController {
         if (accessToken != null && pullRequest == null) {
             pullRequestList = gitHubPullRequestService.fetchPullRequests(accessToken);
         }
-        model.addAttribute("pageContent", "pullrequest");
+        model.addAttribute("pageContent", "content/pullrequest/index");
         model.addAttribute("pullRequest", pullRequest);
         model.addAttribute("pullRequestList", pullRequestList);
         return "layout";
