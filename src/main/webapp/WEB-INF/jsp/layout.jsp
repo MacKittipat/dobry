@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Dobry</title>
+    <link rel="stylesheet" type="text/css" href="<spring:url value="/assets/materialize/css/materialize.min.css" />" />
 </head>
 <body>
 <jsp:include page="${pageContent}.jsp" />
