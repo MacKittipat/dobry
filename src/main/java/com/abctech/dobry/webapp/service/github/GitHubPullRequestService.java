@@ -1,5 +1,6 @@
 package com.abctech.dobry.webapp.service.github;
 
+import com.abctech.dobry.webapp.enums.GitHubPullRequestState;
 import com.abctech.dobry.webapp.json.PullRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +23,12 @@ public class GitHubPullRequestService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public List<PullRequest> fetchPullRequests(String accessToken, String repository) {
-        log.debug("Fetching all pull requests");
+    public List<PullRequest> fetchPullRequests(String accessToken,
+                                               String repository,
+                                               GitHubPullRequestState state) {
+        log.debug("Fetching all pull requests " + state);
         ResponseEntity<PullRequest[]> response = restTemplate.exchange(
-                "https://api.github.com/repos/amedia/" + repository + "/pulls",
+                "https://api.github.com/repos/amedia/" + repository + "/pulls?state=" + state,
                 HttpMethod.GET,
                 createHeaderAuthorization(accessToken),
                 PullRequest[].class);

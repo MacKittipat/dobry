@@ -3,8 +3,14 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <form:form commandName="gitHubPullRequestForm" method="get" cssclass="row">
-    <div class="input-field col l8">
-        <form:select path="repo" items="${repoMap}" cssClass="blue-text" />
+    <div class="input-field col l6">
+        <form:select path="repo" cssClass="blue-text">
+            <option value="" disabled selected>Select repo</option>
+            <form:options items="${repoMap}" />
+        </form:select>
+    </div>
+    <div class="input-field col l2">
+        <form:select path="state" cssClass="blue-text" items="${pullRequestStateMap}" />
     </div>
     <div class="input-field col l4">
         <button class="btn waves-effect waves-light col l12" type="submit">
