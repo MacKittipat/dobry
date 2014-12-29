@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <h2 class="col l12">Welcome to Dobry</h2>
 <div class="col l12">
-    <div id="card-login" class="card white">
+    <div class="card white">
         <div class="card-content blue-text center">
             <h2>
                 Please Login
@@ -10,7 +10,7 @@
             <a class="btn-large waves-effect waves-light white-text col l12" href="<spring:url value="${gitHubLoginUrl}" />">
                 <div>
                     Login
-                    <i class="mdi-action-account-box"></i>
+                    <i class="mdi-action-account-box right"></i>
                 </div>
             </a>
         </div>
