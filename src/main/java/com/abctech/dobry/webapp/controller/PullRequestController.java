@@ -51,6 +51,11 @@ public class PullRequestController {
             List<PullRequestModel> pullRequestModelList =
                     timeCalculatorService.calculateDiffPullRequestList(pullRequestList);
             if (!pullRequestList.isEmpty()) {
+                model.addAttribute(
+                        "gitHubPullRequestUrl",
+                        gitHubConfig.getGitHubUrl() + "/" +
+                                gitHubConfig.getOrganization() + "/" +
+                                gitHubPullRequestForm.getRepo() + "/pull/");
                 model.addAttribute("pullRequestModelList", pullRequestModelList);
             }
         }

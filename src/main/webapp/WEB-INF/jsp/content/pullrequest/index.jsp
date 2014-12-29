@@ -21,7 +21,7 @@
                 <table class="striped blue-text">
                     <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>Number</th>
                         <th>Title</th>
                         <th>Status</th>
                         <th>Time</th>
@@ -30,7 +30,11 @@
                     <tbody>
                     <c:forEach var="pullRequestModel" items="${pullRequestModelList}">
                         <tr>
-                            <td>${pullRequestModel.pullRequest.id}</td>
+                            <td>
+                                <a href="${gitHubPullRequestUrl}${pullRequestModel.pullRequest.number}">
+                                    ${pullRequestModel.pullRequest.number}
+                                </a>
+                            </td>
                             <td>${pullRequestModel.pullRequest.title}</td>
                             <td>${pullRequestModel.pullRequest.state}</td>
                             <td>${pullRequestModel.diffTime}</td>

@@ -8,3 +8,10 @@ html {
 select {
     display: block;
 }
+
+.card a {
+    color: #2196F3;
+}
+.card a:hover {
+    color: #01579b;
+}

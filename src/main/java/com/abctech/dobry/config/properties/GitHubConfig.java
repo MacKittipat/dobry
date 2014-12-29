@@ -10,6 +10,9 @@ import java.util.List;
 @PropertySource("classpath:github.properties")
 public class GitHubConfig {
 
+    @Value("${github.url}")
+    private String gitHubUrl;
+
     @Value("${github.url.authorize}")
     private String authorizeUrl;
 
@@ -33,6 +36,10 @@ public class GitHubConfig {
 
     @Value("#{'${github.organization.repos}'.split(',')}")
     private List<String> organizationRepos;
+
+    public String getGitHubUrl() {
+        return gitHubUrl;
+    }
 
     public String getAuthorizeUrl() {
         return authorizeUrl;
