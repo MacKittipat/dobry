@@ -1,0 +1,10 @@
+html {
+    background-color: #2196F3;
+    color: #ffffff;
+}
+#header {
+    background-color: #ffffff;
+}
+select {
+    display: block;
+}
