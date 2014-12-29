@@ -43,7 +43,7 @@ public class PullRequestController {
         }
         model.addAttribute("repoMap", repoMap);
 
-        if (accessToken != null && gitHubPullRequestForm.getRepo() != null) {
+        if (gitHubPullRequestForm.getRepo() != null) {
             List<PullRequest> pullRequestList =
                     gitHubPullRequestService.fetchPullRequests(
                             accessToken,
