@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import java.util.List;
+
 @Configuration
 @PropertySource("classpath:github.properties")
 public class GitHubConfig {
@@ -25,6 +27,12 @@ public class GitHubConfig {
 
     @Value("${github.authorize.state}")
     private String authorizeState;
+
+    @Value("${github.organization}")
+    private String organization;
+
+    @Value("#{'${github.organization.repos}'.split(',')}")
+    private List<String> organizationRepos;
 
     public String getAuthorizeUrl() {
         return authorizeUrl;
@@ -48,5 +56,13 @@ public class GitHubConfig {
 
     public String getAuthorizeState() {
         return authorizeState;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public List<String> getOrganizationRepos() {
+        return organizationRepos;
     }
 }

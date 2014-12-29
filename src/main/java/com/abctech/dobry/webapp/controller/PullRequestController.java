@@ -1,7 +1,7 @@
 package com.abctech.dobry.webapp.controller;
 
+import com.abctech.dobry.config.properties.GitHubConfig;
 import com.abctech.dobry.form.GitHubPullRequestForm;
-import com.abctech.dobry.webapp.json.OrganizationRepository;
 import com.abctech.dobry.webapp.json.PullRequest;
 import com.abctech.dobry.webapp.service.github.GitHubOrganizationRepositoryService;
 import com.abctech.dobry.webapp.service.github.GitHubPullRequestService;
@@ -26,24 +26,32 @@ public class PullRequestController {
     @Autowired
     private GitHubOrganizationRepositoryService gitHubOrganizationRepositoryService;
 
+    @Autowired
+    private GitHubConfig gitHubConfig;
+
     @RequestMapping(value = "/")
     public String index(Model model,
                         HttpServletRequest request,
                         @ModelAttribute GitHubPullRequestForm gitHubPullRequestForm) {
         String accessToken = request.getSession().getAttribute("accessToken").toString();
+
         Map<String, String> repoMap = new LinkedHashMap<>();
         repoMap.put("", "Please select");
-        List<OrganizationRepository> repositories = gitHubOrganizationRepositoryService.fetchAmediaRepositories(accessToken);
-        for (OrganizationRepository repository : repositories) {
-            repoMap.put(repository.getName(), repository.getName());
+        for(String repo : gitHubConfig.getOrganizationRepos()) {
+            repoMap.put(repo, repo);
         }
         model.addAttribute("repoMap", repoMap);
+
         if (accessToken != null && gitHubPullRequestForm.getRepo() != null) {
-            List<PullRequest> pullRequestList = gitHubPullRequestService.fetchPullRequests(accessToken, gitHubPullRequestForm.getRepo());
+            List<PullRequest> pullRequestList =
+                    gitHubPullRequestService.fetchPullRequests(
+                            accessToken,
+                            gitHubPullRequestForm.getRepo());
             if (!pullRequestList.isEmpty()) {
                 model.addAttribute("pullRequestList", pullRequestList);
             }
         }
+
         model.addAttribute("pageContent", "content/pullrequest/index");
         return "layout";
     }
