@@ -15,16 +15,12 @@ public class GitHubInterceptor extends HandlerInterceptorAdapter {
         if (!request.getRequestURI().equals("/dobry/") &&
             !request.getRequestURI().equals("/dobry/auth/github") &&
             !request.getRequestURI().equals("/dobry/auth/github/callback")) {
-            String accessToken = null;
             try {
-                accessToken = request.getSession().getAttribute("accessToken").toString();
+                String accessToken = request.getSession().getAttribute("accessToken").toString();
             }  catch (NullPointerException ex) {
                 response.sendRedirect("/dobry/");
+                return false;
             }
-            if (accessToken != null) {
-                return true;
-            }
-            return false;
         }
         return true;
     }
