@@ -7,18 +7,20 @@
     <input type="submit" value="Search"/>
 </form:form>
 
-<c:if test="${pullRequestList != null}">
+<c:if test="${pullRequestModelList != null}">
     <table>
         <tr>
             <th>id</th>
             <th>title</th>
             <th>status</th>
+            <th>time</th>
         </tr>
-        <c:forEach var="pullRequest" items="${pullRequestList}">
+        <c:forEach var="pullRequestModel" items="${pullRequestModelList}">
             <tr>
-                <td>${pullRequest.id}</td>
-                <td>${pullRequest.title}</td>
-                <td>${pullRequest.state}</td>
+                <td>${pullRequestModel.pullRequest.id}</td>
+                <td>${pullRequestModel.pullRequest.title}</td>
+                <td>${pullRequestModel.pullRequest.state}</td>
+                <td>${pullRequestModel.diffTime}</td>
             </tr>
         </c:forEach>
     </table>
