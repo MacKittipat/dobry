@@ -72,6 +72,9 @@ public class GitHubPullRequestService {
                                   PullRequestPaginationModel pullRequestPaginationModel) {
         String linkHeader = httpHeaders.getFirst("Link");
         log.debug("Link header = {}", linkHeader);
+        if(linkHeader == null) {
+            return;
+        }
         String[] links = linkHeader.split(",");
         for(String link : links) {
             if(link.contains("prev")) {
