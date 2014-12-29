@@ -3,7 +3,6 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <form:form commandName="gitHubPullRequestForm" method="get" cssclass="row">
-    <form:hidden path="page" />
     <div class="input-field col l6">
         <form:select path="repo" cssClass="blue-text">
             <option value="" disabled selected>Select repo</option>
@@ -13,6 +12,7 @@
     <div class="input-field col l2">
         <form:select path="state" cssClass="blue-text" items="${pullRequestStateMap}" />
     </div>
+    <form:hidden path="page" value="1" />
     <div class="input-field col l4">
         <button class="btn waves-effect waves-light col l12" type="submit">
             View
@@ -49,21 +49,30 @@
                     </c:forEach>
                     </tbody>
                 </table>
-                <div class="row">
-                    <div class="col l12 center">
-                        <a class="btn waves-effect waves-light white-text"
-                           href="?repo=${gitHubPullRequestForm.repo}&state=${gitHubPullRequestForm.state}&page=${pullRequestPaginationModel.previousPage}">
-                            <i class="mdi-image-navigate-before left"></i>
-                            Prev
-                        </a>
-                        <a class="btn waves-effect waves-light white-text"
-                           href="?repo=${gitHubPullRequestForm.repo}&state=${gitHubPullRequestForm.state}&page=${pullRequestPaginationModel.nextPage}">
-                            Next
-                            <i class="mdi-image-navigate-next right"></i>
-                        </a>
+
+            </div>
+            <c:if test="${pullRequestPaginationModel.previousPage != null || pullRequestPaginationModel.nextPage != null}">
+                <div class="card-action">
+                    <div class="row">
+                        <div class="col l12 center">
+                            <c:if test="${pullRequestPaginationModel.previousPage != null}">
+                                <a class="btn waves-effect waves-light white-text"
+                                   href="?repo=${gitHubPullRequestForm.repo}&state=${gitHubPullRequestForm.state}&page=${pullRequestPaginationModel.previousPage}">
+                                    <i class="mdi-image-navigate-before left"></i>
+                                    Prev
+                                </a>
+                            </c:if>
+                            <c:if test="${pullRequestPaginationModel.nextPage != null}">
+                                <a class="btn waves-effect waves-light white-text"
+                                   href="?repo=${gitHubPullRequestForm.repo}&state=${gitHubPullRequestForm.state}&page=${pullRequestPaginationModel.nextPage}">
+                                    Next
+                                    <i class="mdi-image-navigate-next right"></i>
+                                </a>
+                            </c:if>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </c:if>
         </div>
     </c:if>
 </div>
