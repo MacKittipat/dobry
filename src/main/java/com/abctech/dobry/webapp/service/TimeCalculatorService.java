@@ -19,15 +19,22 @@ public class TimeCalculatorService {
     public String calculateDiffTime(DateTime startDate, DateTime endDate) {
 
         int totalMinute = Minutes.minutesBetween(startDate, endDate).getMinutes();
-        int hour = totalMinute / 60;
+        int day = totalMinute / 1440;
+        int hour = (totalMinute % 1440) / 60;
         int minute = totalMinute % 60;
 
         String result = "";
+        if(day > 0) {
+            result += day + "d";
+        }
         if(hour > 0) {
+            if(day > 0) {
+                result += " ";
+            }
             result += hour + "h";
         }
         if(minute > 0) {
-            if(hour > 0) {
+            if(day > 0 || hour > 0) {
                 result += " ";
             }
             result += minute + "m";

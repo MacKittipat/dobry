@@ -26,5 +26,17 @@ public class TimeCalculatorServiceTest {
         startDate = now;
         endDate = now.plusHours(1).plusMinutes(1).plusSeconds(60);
         Assert.assertEquals("1h 2m", timeCalculatorService.calculateDiffTime(startDate, endDate));
+
+        startDate = now;
+        endDate = now.plusDays(3).plusHours(1).plusMinutes(1).plusSeconds(60);
+        Assert.assertEquals("3d 1h 2m", timeCalculatorService.calculateDiffTime(startDate, endDate));
+
+        startDate = now;
+        endDate = now.plusDays(3).plusHours(25).plusMinutes(59).plusSeconds(60);
+        Assert.assertEquals("4d 2h", timeCalculatorService.calculateDiffTime(startDate, endDate));
+
+        startDate = now;
+        endDate = now.plusDays(3).plusHours(25).plusMinutes(59).plusSeconds(33);
+        Assert.assertEquals("4d 1h 59m", timeCalculatorService.calculateDiffTime(startDate, endDate));
     }
 }
