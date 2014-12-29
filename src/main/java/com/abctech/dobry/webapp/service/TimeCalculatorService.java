@@ -1,7 +1,7 @@
 package com.abctech.dobry.webapp.service;
 
 import org.joda.time.DateTime;
-import org.joda.time.Seconds;
+import org.joda.time.Minutes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,15 +12,24 @@ public class TimeCalculatorService {
     private static final Logger log = LoggerFactory.getLogger(TimeCalculatorService.class);
 
     public String calculateDiffTime(DateTime startDate, DateTime endDate) {
-        int totalSecs = Seconds.secondsBetween(startDate, endDate).getSeconds();
 
-        int hours = totalSecs / 3600;
-        int minutes = (totalSecs % 3600) / 60;
-        int seconds = totalSecs % 60;
+        int totalMinute = Minutes.minutesBetween(startDate, endDate).getMinutes();
+        int hour = totalMinute / 60;
+        int minute = totalMinute % 60;
 
-        String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-        log.debug("sec = {}", timeString);
+        String result = "";
+        if(hour > 0) {
+            result += hour + "h";
+        }
+        if(minute > 0) {
+            if(hour > 0) {
+                result += " ";
+            }
+            result += minute + "m";
+        }
 
-        return "";
+        log.debug("Result = {}", result);
+
+        return result;
     }
 }
