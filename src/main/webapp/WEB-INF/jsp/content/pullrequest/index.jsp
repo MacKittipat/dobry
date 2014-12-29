@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <form:form commandName="gitHubPullRequestForm" method="get" cssclass="row">
+    <form:hidden path="page" />
     <div class="input-field col l6">
         <form:select path="repo" cssClass="blue-text">
             <option value="" disabled selected>Select repo</option>
@@ -21,7 +22,7 @@
 </form:form>
 
 <div class="col l12">
-    <c:if test="${pullRequestModelList != null}">
+    <c:if test="${pullRequestPaginationModel.pullRequestModelList != null}">
         <div class="card white">
             <div class="card-content">
                 <table class="striped blue-text">
@@ -34,7 +35,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="pullRequestModel" items="${pullRequestModelList}">
+                    <c:forEach var="pullRequestModel" items="${pullRequestPaginationModel.pullRequestModelList}">
                         <tr>
                             <td>
                                 <a href="${gitHubPullRequestUrl}${pullRequestModel.pullRequest.number}">
@@ -48,6 +49,20 @@
                     </c:forEach>
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col l12 center">
+                        <a class="btn waves-effect waves-light white-text"
+                           href="?repo=${gitHubPullRequestForm.repo}&state=${gitHubPullRequestForm.state}&page=${pullRequestPaginationModel.previousPage}">
+                            <i class="mdi-image-navigate-before left"></i>
+                            Prev
+                        </a>
+                        <a class="btn waves-effect waves-light white-text"
+                           href="?repo=${gitHubPullRequestForm.repo}&state=${gitHubPullRequestForm.state}&page=${pullRequestPaginationModel.nextPage}">
+                            Next
+                            <i class="mdi-image-navigate-next right"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </c:if>

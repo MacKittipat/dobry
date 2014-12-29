@@ -4,6 +4,7 @@ public class GitHubPullRequestForm {
 
     private String repo;
     private String state;
+    private Integer page = 1;
 
     public String getRepo() {
         return repo;
@@ -19,5 +20,13 @@ public class GitHubPullRequestForm {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 }
