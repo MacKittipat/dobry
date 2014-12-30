@@ -1,6 +1,6 @@
 package com.abctech.dobry.config;
 
-import com.abctech.dobry.interceptor.GitHubInterceptor;
+import com.abctech.dobry.interceptor.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
-    private GitHubInterceptor gitHubInterceptor;
+    private AuthInterceptor gitHubInterceptor;
 
     @Bean
     public InternalResourceViewResolver viewResolver() {
