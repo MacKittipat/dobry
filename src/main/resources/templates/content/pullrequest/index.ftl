@@ -43,7 +43,11 @@
                                     </a>
                                 </td>
                                 <td>${pullRequestModel.pullRequest.title}</td>
-                                <td>${pullRequestModel.pullRequest.state}</td>
+                                <#if pullRequestModel.pullRequest.state == 'open'>
+                                    <td class="green-text" style="text-transform: capitalize">${pullRequestModel.pullRequest.state}</td>
+                                <#else>
+                                    <td class="red-text accent-2" style="text-transform: capitalize">${pullRequestModel.pullRequest.state}</td>
+                                </#if>
                                 <td>${pullRequestModel.diffTime}</td>
                             </tr>
                             </#list>
