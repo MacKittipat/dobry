@@ -7,7 +7,12 @@ import org.springframework.context.annotation.PropertySource;
 import java.util.List;
 
 @Configuration
-@PropertySource("classpath:github.properties")
+@PropertySource(
+        value = {
+                "classpath:github.properties",
+                "file:///usr/local/dobry/config/github.properties"
+                },
+        ignoreResourceNotFound = true)
 public class GitHubConfig {
 
     @Value("${github.url}")
