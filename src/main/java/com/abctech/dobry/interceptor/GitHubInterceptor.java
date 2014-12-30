@@ -10,15 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 public class GitHubInterceptor extends HandlerInterceptorAdapter {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
-        // exclude the root web context and the login event url
-        if (!request.getRequestURI().equals("/dobry/") &&
-            !request.getRequestURI().equals("/dobry/auth/github") &&
-            !request.getRequestURI().equals("/dobry/auth/github/callback")) {
-            try {
-                String accessToken = request.getSession().getAttribute("accessToken").toString();
-            }  catch (NullPointerException ex) {
-                response.sendRedirect("/dobry/");
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) throws Exception{
+        String uri = request.getRequestURI().substring(request.getContextPath().length());
+        if (!uri.equals("/") &&
+            !uri.equals("/auth/github") &&
+            !uri.equals("/auth/github/callback")) {
+            if(request.getSession() == null ||
+                    request.getSession().getAttribute("accessToken") == null) {
+                response.sendRedirect(request.getContextPath());
                 return false;
             }
         }
