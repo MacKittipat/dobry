@@ -2,26 +2,78 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<form:form commandName="gitHubPullRequestForm" method="get">
-    <form:select path="repo" items="${repoMap}" />
-    <input type="submit" value="Search"/>
+<form:form commandName="gitHubPullRequestForm" method="get" cssclass="row">
+    <div class="input-field col l6">
+        <form:select path="repo" cssClass="blue-text">
+            <option value="" disabled selected>Select repo</option>
+            <form:options items="${repoMap}" />
+        </form:select>
+    </div>
+    <div class="input-field col l2">
+        <form:select path="state" cssClass="blue-text" items="${pullRequestStateMap}" />
+    </div>
+    <form:hidden path="page" value="1" />
+    <div class="input-field col l4">
+        <button class="btn waves-effect waves-light col l12" type="submit">
+            View
+            <i class="mdi-action-search right"></i>
+        </button>
+    </div>
 </form:form>
 
-<c:if test="${pullRequestModelList != null}">
-    <table>
-        <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>status</th>
-            <th>time</th>
-        </tr>
-        <c:forEach var="pullRequestModel" items="${pullRequestModelList}">
-            <tr>
-                <td>${pullRequestModel.pullRequest.id}</td>
-                <td>${pullRequestModel.pullRequest.title}</td>
-                <td>${pullRequestModel.pullRequest.state}</td>
-                <td>${pullRequestModel.diffTime}</td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
+<div class="col l12">
+    <c:if test="${pullRequestPaginationModel.pullRequestModelList != null}">
+        <div class="card white">
+            <div class="card-content">
+                <table class="striped blue-text">
+                    <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Time</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="pullRequestModel" items="${pullRequestPaginationModel.pullRequestModelList}">
+                        <tr>
+                            <td>
+                                <a href="${gitHubPullRequestUrl}${pullRequestModel.pullRequest.number}">
+                                    ${pullRequestModel.pullRequest.number}
+                                </a>
+                            </td>
+                            <td>${pullRequestModel.pullRequest.title}</td>
+                            <td>${pullRequestModel.pullRequest.state}</td>
+                            <td>${pullRequestModel.diffTime}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+
+            </div>
+            <c:if test="${pullRequestPaginationModel.previousPage != null || pullRequestPaginationModel.nextPage != null}">
+                <div class="card-action">
+                    <div class="row">
+                        <div class="col l12 center">
+                            <c:if test="${pullRequestPaginationModel.previousPage != null}">
+                                <a class="btn waves-effect waves-light white-text"
+                                   href="?repo=${gitHubPullRequestForm.repo}&state=${gitHubPullRequestForm.state}&page=${pullRequestPaginationModel.previousPage}">
+                                    <i class="mdi-image-navigate-before left"></i>
+                                    Prev
+                                </a>
+                            </c:if>
+                            <c:if test="${pullRequestPaginationModel.nextPage != null}">
+                                <a class="btn waves-effect waves-light white-text"
+                                   href="?repo=${gitHubPullRequestForm.repo}&state=${gitHubPullRequestForm.state}&page=${pullRequestPaginationModel.nextPage}">
+                                    Next
+                                    <i class="mdi-image-navigate-next right"></i>
+                                </a>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
+        </div>
+    </c:if>
+</div>
+
