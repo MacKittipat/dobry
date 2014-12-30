@@ -1,6 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <form:form commandName="gitHubPullRequestForm" method="get" cssclass="row">
     <div class="input-field col l6">
@@ -43,7 +44,14 @@
                                 </a>
                             </td>
                             <td>${pullRequestModel.pullRequest.title}</td>
-                            <td>${pullRequestModel.pullRequest.state}</td>
+                            <c:choose>
+                                <c:when test="${pullRequestModel.pullRequest.state == 'open'}">
+                                    <td class="green-text" style="text-transform: capitalize">${fn:toLowerCase(pullRequestModel.pullRequest.state)}</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td class="red-text accent-2" style="text-transform: capitalize">${fn:toLowerCase(pullRequestModel.pullRequest.state)}</td>
+                                </c:otherwise>
+                            </c:choose>
                             <td>${pullRequestModel.diffTime}</td>
                         </tr>
                     </c:forEach>
