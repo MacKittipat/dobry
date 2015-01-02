@@ -16,7 +16,7 @@ public class MainController {
     @Autowired
     private GitHubPullRequestService gitHubPullRequestService;
 
-    @RequestMapping(value = {"/", "/index"})
+    @RequestMapping("/")
     public String index(Model model) {
         model.addAttribute("pageContent", "content/main/index");
         model.addAttribute("gitHubLoginUrl", "/auth/github");
