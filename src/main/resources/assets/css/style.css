@@ -2,13 +2,13 @@ html {
     background-color: #2196F3;
     color: #ffffff;
 }
-#header {
-    background-color: #ffffff;
-}
 select {
     display: block;
 }
 
+#header {
+    border-top: 2px solid #1565c0;
+}
 .card a {
     color: #2196F3;
 }

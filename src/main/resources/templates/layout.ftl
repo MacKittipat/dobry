@@ -7,7 +7,7 @@
     </head>
     <body>
 
-        <div id="header" class="row z-depth-1">
+        <div id="header" class="row z-depth-1 white">
             <div class="container">
                 <div class="col l12">
                     <h1>
