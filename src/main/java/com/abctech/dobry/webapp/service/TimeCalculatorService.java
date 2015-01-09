@@ -3,7 +3,8 @@ package com.abctech.dobry.webapp.service;
 import com.abctech.dobry.webapp.json.PullRequest;
 import com.abctech.dobry.webapp.model.PullRequestModel;
 import org.joda.time.DateTime;
-import org.joda.time.Minutes;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,53 @@ public class TimeCalculatorService {
 
     private static final Logger log = LoggerFactory.getLogger(TimeCalculatorService.class);
 
+    /**
+     * This method ignore time during weekend and lunch break.
+     */
     public String calculateDiffTime(DateTime startDate, DateTime endDate) {
 
-        int totalMinute = Minutes.minutesBetween(startDate, endDate).getMinutes();
+        int countMinute = 0;
+        DateTime currentTime = startDate;
+        while(currentTime.isBefore(endDate)) {
+            currentTime = currentTime.plusMinutes(1);
+            if(currentTime.getDayOfWeek() != DateTimeConstants.SATURDAY
+                    && currentTime.getDayOfWeek() != DateTimeConstants.SUNDAY) {
+
+                // 9.00 - 12.30
+                DateTime morningStart = new DateTime(
+                        currentTime.getYear(),
+                        currentTime.getMonthOfYear(),
+                        currentTime.getDayOfMonth(),
+                        9, 1, 0);
+                DateTime morningEnd = new DateTime(
+                        currentTime.getYear(),
+                        currentTime.getMonthOfYear(),
+                        currentTime.getDayOfMonth(),
+                        12, 31, 0);
+                Interval morningInterval = new Interval(morningStart, morningEnd);
+
+                // 13.30 - 18.00
+                DateTime afternoonStart = new DateTime(
+                        currentTime.getYear(),
+                        currentTime.getMonthOfYear(),
+                        currentTime.getDayOfMonth(),
+                        13, 31, 0);
+                DateTime afternoonEnd = new DateTime(
+                        currentTime.getYear(),
+                        currentTime.getMonthOfYear(),
+                        currentTime.getDayOfMonth(),
+                        18, 1, 0);
+                Interval afternoonInterval = new Interval(afternoonStart, afternoonEnd);
+
+                if(morningInterval.contains(currentTime) || afternoonInterval.contains(currentTime)) {
+                    log.debug("currentTime = {}", currentTime.toString());
+                    countMinute++;
+                }
+            }
+        }
+        log.debug("countMinute = {}", countMinute);
+
+        int totalMinute = countMinute;
         int day = totalMinute / 1440;
         int hour = (totalMinute % 1440) / 60;
         int minute = totalMinute % 60;
