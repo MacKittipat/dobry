@@ -57,7 +57,7 @@ public class TimeCalculatorService {
                 Interval afternoonInterval = new Interval(afternoonStart, afternoonEnd);
 
                 if(morningInterval.contains(currentTime) || afternoonInterval.contains(currentTime)) {
-//                    log.debug("currentTime = {}", currentTime.toString());
+                    log.debug("currentTime = {}", currentTime.toString());
                     countMinute++;
                 }
             }
@@ -65,22 +65,15 @@ public class TimeCalculatorService {
         log.debug("countMinute = {}", countMinute);
 
         int totalMinute = countMinute;
-        int day = totalMinute / 1440;
-        int hour = (totalMinute % 1440) / 60;
+        int hour = totalMinute / 60;
         int minute = totalMinute % 60;
 
         String result = "";
-        if(day > 0) {
-            result += day + "d";
-        }
         if(hour > 0) {
-            if(day > 0) {
-                result += " ";
-            }
             result += hour + "h";
         }
         if(minute > 0) {
-            if(day > 0 || hour > 0) {
+            if(hour > 0) {
                 result += " ";
             }
             result += minute + "m";
