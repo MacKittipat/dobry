@@ -4,6 +4,7 @@ import com.abctech.dobry.webapp.json.PullRequest;
 import com.abctech.dobry.webapp.model.PullRequestModel;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,7 @@ public class TimeCalculatorService {
                 Interval afternoonInterval = new Interval(afternoonStart, afternoonEnd);
 
                 if(morningInterval.contains(currentTime) || afternoonInterval.contains(currentTime)) {
-                    log.debug("currentTime = {}", currentTime.toString());
+//                    log.debug("currentTime = {}", currentTime.toString());
                     countMinute++;
                 }
             }
@@ -91,17 +92,21 @@ public class TimeCalculatorService {
 
     public List<PullRequestModel> calculateDiffPullRequestList(List<PullRequest> pullRequestList) {
         List<PullRequestModel> pullRequestModelList = new ArrayList<>();
+        String timeZoneId = "Asia/Bangkok";
         for(PullRequest pullRequest : pullRequestList) {
-            DateTime startDate = pullRequest.getCreatedAt();
+            DateTime startDate = pullRequest.getCreatedAt().withZone(DateTimeZone.forID(timeZoneId));
             DateTime endDate = DateTime.now();
             if(pullRequest.getMergedAt() != null) {
-                endDate = pullRequest.getMergedAt();
+                endDate = pullRequest.getMergedAt().withZone(DateTimeZone.forID(timeZoneId));
             } else if(pullRequest.getClosedAt() != null) {
-                endDate = pullRequest.getClosedAt();
+                endDate = pullRequest.getClosedAt().withZone(DateTimeZone.forID(timeZoneId));
             }
             PullRequestModel pullRequestModel = new PullRequestModel();
             pullRequestModel.setPullRequest(pullRequest);
             pullRequestModel.setDiffTime(calculateDiffTime(startDate, endDate));
+            String dateTimePattern = "dd/MM/yyyy HH:mm";
+            pullRequestModel.setStartDate(startDate.toString(dateTimePattern));
+            pullRequestModel.setEndDate(endDate.toString(dateTimePattern));
             pullRequestModelList.add(pullRequestModel);
         }
         return pullRequestModelList;

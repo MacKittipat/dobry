@@ -48,7 +48,11 @@
                                 <#else>
                                     <td class="red-text accent-2" style="text-transform: capitalize">${pullRequestModel.pullRequest.state}</td>
                                 </#if>
-                                <td>${pullRequestModel.diffTime}</td>
+                                <td>
+                                    <span title="${pullRequestModel.startDate} - ${pullRequestModel.endDate}">
+                                        ${pullRequestModel.diffTime}
+                                    </span>
+                                </td>
                             </tr>
                             </#list>
                         </tbody>

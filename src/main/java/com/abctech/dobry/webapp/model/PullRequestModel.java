@@ -6,6 +6,8 @@ public class PullRequestModel {
 
     private PullRequest pullRequest;
     private String diffTime;
+    private String startDate;
+    private String endDate;
 
     public PullRequest getPullRequest() {
         return pullRequest;
@@ -21,5 +23,21 @@ public class PullRequestModel {
 
     public void setDiffTime(String diffTime) {
         this.diffTime = diffTime;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 }
