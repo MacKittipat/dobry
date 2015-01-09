@@ -57,7 +57,7 @@ public class TimeCalculatorService {
                 Interval afternoonInterval = new Interval(afternoonStart, afternoonEnd);
 
                 if(morningInterval.contains(currentTime) || afternoonInterval.contains(currentTime)) {
-                    log.debug("currentTime = {}", currentTime.toString());
+//                    log.debug("currentTime = {}", currentTime.toString());
                     countMinute++;
                 }
             }
